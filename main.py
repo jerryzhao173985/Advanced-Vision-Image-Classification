@@ -34,7 +34,7 @@ import vgg_fconv
 import resnet_fconv
 import numpy as np
 
-from contrastiveLoss import SupervisedContrastiveLoss
+from loss import SupervisedContrastiveLoss
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
