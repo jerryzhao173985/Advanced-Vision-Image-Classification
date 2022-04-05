@@ -33,6 +33,8 @@ import torchvision.models as models
 import vgg_fconv
 import resnet_fconv
 import numpy as np
+from pytorch_metric_learning import losses
+from loss import *
 
 from loss import SupervisedContrastiveLoss
 
@@ -229,8 +231,11 @@ def main_worker(gpu, ngpus_per_node, args):
             model = torch.nn.DataParallel(model).cuda()
 
     # define loss function (criterion) and optimizer
-    # criterion = nn.CrossEntropyLoss().cuda(args.gpu)
-    criterion = SupervisedContrastiveLoss(temperature=args.temperature).cuda(args.gpu) # Custom Implementation
+    # criterion = AsymmetricLossSingleLabel().cuda(args.gpu)
+    # criterion = JsdCrossEntropy().cuda(args.gpu)
+    criterion = LabelSmoothingCrossEntropy().cuda(args.gpu)
+    # criterion = losses.SupConLoss(temperature=args.temperature).cuda(args.gpu)
+    # criterion = SupervisedContrastiveLoss(temperature=args.temperature).cuda(args.gpu) # Custom Implementation
     # criterion = losses.SupConLoss(temperature=CFG.temperature).to(CFG.device)
     # optimizer = optim.Adam(model.parameters(), lr=CFG.lr, weight_decay=CFG.weight_decay)
     # scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=CFG.T_max, eta_min=CFG.min_lr)
