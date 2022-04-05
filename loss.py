@@ -66,7 +66,7 @@ class JsdCrossEntropy(nn.Module):
     https://arxiv.org/abs/1912.02781
     Hacked together by / Copyright 2020 Ross Wightman
     """
-    def __init__(self, num_splits=3, alpha=12, smoothing=0.1):
+    def __init__(self, num_splits=2, alpha=12, smoothing=0.1):
         super().__init__()
         self.num_splits = num_splits
         self.alpha = alpha
@@ -195,7 +195,7 @@ class AsymmetricLossSingleLabel(nn.Module):
         x: input logits
         y: targets (1-hot vector)
         """
-
+        target = torch.nn.functional.one_hot(target, num_classes=1000).type(torch.cuda.FloatTensor)
         num_classes = inputs.size()[-1]
         log_preds = self.logsoftmax(inputs)
         self.targets_classes = torch.zeros_like(inputs).scatter_(1, target.long().unsqueeze(1), 1)
