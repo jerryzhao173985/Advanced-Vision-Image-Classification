@@ -22,7 +22,7 @@ class SupervisedContrastiveLoss(nn.Module):
             ),
             self.temperature,
         )
-        return losses.NTXentLoss(temperature=0.07)(logits, torch.squeeze(labels))
+        return losses.NTXentLoss(temperature=self.temperature)(logits, torch.squeeze(labels))
 
 class LabelSmoothingCrossEntropy(nn.Module):
     """ NLL loss with label smoothing.
