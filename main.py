@@ -49,7 +49,7 @@ model_names.append('resnet101_FConv')
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 
 parser.add_argument('--tem', '--temperature', default=0.1, type=float,
-                    metavar='temperature', help='temperature')
+                    metavar='temperature', help='temperature', dest='temperature')
 
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
