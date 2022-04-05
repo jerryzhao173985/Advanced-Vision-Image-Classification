@@ -11,3 +11,8 @@ On server simply run:
 Other commands:
 
 ```python main.py -a resnet50_FConv -sub True -t data```
+
+
+### modified loss:
+
+!pip install -q timm pytorch-metric-learning

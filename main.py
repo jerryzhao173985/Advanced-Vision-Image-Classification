@@ -34,6 +34,8 @@ import vgg_fconv
 import resnet_fconv
 import numpy as np
 
+from contrastiveLoss import SupervisedContrastiveLoss
+
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
     and callable(models.__dict__[name]))
@@ -45,6 +47,10 @@ model_names.append('resnet50_FConv')
 model_names.append('resnet101_FConv')
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+
+parser.add_argument('--tem', '--temperature', default=0.1, type=float,
+                    metavar='temperature', help='temperature')
+
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
 parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
@@ -221,7 +227,11 @@ def main_worker(gpu, ngpus_per_node, args):
             model = torch.nn.DataParallel(model).cuda()
 
     # define loss function (criterion) and optimizer
-    criterion = nn.CrossEntropyLoss().cuda(args.gpu)
+    # criterion = nn.CrossEntropyLoss().cuda(args.gpu)
+    criterion = SupervisedContrastiveLoss(temperature=args.temperature).cuda(args.gpu) # Custom Implementation
+    # criterion = losses.SupConLoss(temperature=CFG.temperature).to(CFG.device)
+    # optimizer = optim.Adam(model.parameters(), lr=CFG.lr, weight_decay=CFG.weight_decay)
+    # scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=CFG.T_max, eta_min=CFG.min_lr)
 
     optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
