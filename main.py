@@ -53,7 +53,7 @@ parser.add_argument('--tem', '--temperature', default=0.1, type=float,
 
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet18',
+parser.add_argument('-a', '--arch', metavar='ARCH', default='resnet50',
                     choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
@@ -114,6 +114,8 @@ best_acc1 = 0
 
 def main():
     args = parser.parse_args()
+    
+    print("temperature is: ", args.temperature)
 
     if args.seed is not None:
         random.seed(args.seed)
